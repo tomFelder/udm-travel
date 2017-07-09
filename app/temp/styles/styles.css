@@ -469,7 +469,6 @@ img {
   border-bottom: 10px solid #2f5572;
   position: relative;
 
-
 }
 
 .large-hero__image {
@@ -595,7 +594,7 @@ img {
 @media (min-width: 800px) {
 
 .page-section {
-  padding: 4.5rem 0
+    padding: 4.5rem 0
 }
   }
 
@@ -605,8 +604,8 @@ img {
   }
 
 .headline {
-  font-weight: 300;
   font-size: 1.9rem;
+  font-weight: 300;
   color: #2f5572;
 }
 
@@ -632,7 +631,7 @@ img {
 @media (min-width: 530px) {
 
 .headline--small {
-    font-size: 1.875rem
+      font-size: 1.875rem
   }
   }
 
@@ -644,6 +643,10 @@ img {
 
 .headline--light {
     font-weight: 100;
+  }
+
+.headline strong {
+    font-weight: 400;
   }
 
 .headline--b-margin-small {
