@@ -10,14 +10,6 @@
     padding-right: 65px;
   }
 
-  &--gutters-large {
-    padding-right: -100px;
-  }
-
-  &--gutters-large > div {
-    padding-right: 100px;
-  }
-
   &__b-margin-until-medium {
     margin-bottom: 1rem;
   }
