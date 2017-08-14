@@ -9,4 +9,4 @@ Time seems to be disappearing on me. I'm going to get cracking again soon.
 
 Looking forward to getting back into this... tomorrow maybe? Hopefully tomorrow!
 
-Almost getting frustrated with how long ive been out on this. Going to go for it tomorrow... tuesday at the latest.
+Almost getting frustrated with how long I've been out on this. Going to go for it tomorrow... Tuesday at the latest.
