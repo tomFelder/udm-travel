@@ -3,7 +3,7 @@
   position: absolute;
   width: 100%;
   z-index: 2;
-
+  
   @mixin atMedium {
     background-color: rgba($mainBlue, .3);
   }
@@ -48,6 +48,10 @@
     display: none;
 
     @mixin atMedium {
+      display: block;
+    }
+
+    &--is-visible {
       display: block;
     }
   }
