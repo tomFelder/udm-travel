@@ -12,3 +12,5 @@ Looking forward to getting back into this... tomorrow maybe? Hopefully tomorrow!
 Almost getting frustrated with how long I've been out on this. Going to go for it tomorrow... Tuesday at the latest.
 
 Back into it now and enjoying it. However I do have an issue with JS and webpack
+
+Really enjoying this but find myself exhausted every night... need to find a way to work it into my days
