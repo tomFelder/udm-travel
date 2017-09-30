@@ -11261,22 +11261,38 @@
 	      this.openModalButton = (0, _jquery2.default)(".open-modal");
 	      this.modal = (0, _jquery2.default)(".modal");
 	      this.closeModalButton = (0, _jquery2.default)(".modal__close");
+	      this.events();
 	    }
 	  }, {
 	    key: "events",
 	    value: function events() {
 	      // clicking the open modal button
+	      this.openModalButton.click(this.openModal.bind(this));
 
 	      // clicking the x close modal button
+	      this.closeModalButton.click(this.closeModal.bind(this));
 
-	      // pushes escape key
+	      // pushes any key
+	      (0, _jquery2.default)(document).keyup(this.keyPressHandler.bind(this));
+	    }
+	  }, {
+	    key: "keyPressHandler",
+	    value: function keyPressHandler(e) {
+	      if (e.keyCode == 27) {
+	        this.closeModal();
+	      }
 	    }
 	  }, {
 	    key: "openModal",
-	    value: function openModal() {}
+	    value: function openModal() {
+	      this.modal.addClass("modal--is-visible");
+	      return false;
+	    }
 	  }, {
 	    key: "closeModal",
-	    value: function closeModal() {}
+	    value: function closeModal() {
+	      this.modal.removeClass("modal--is-visible");
+	    }
 	  }]);
 
 	  return Modal;
