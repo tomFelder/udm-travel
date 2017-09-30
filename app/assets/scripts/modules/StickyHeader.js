@@ -4,7 +4,7 @@ import smoothScroll from 'jquery-smooth-scroll';
 
 class StickyHeader {
   constructor() {
-    this.siteHeader = $("site-header");
+    this.siteHeader = $(".site-header");
     this.headerTriggerElement = $(".large-hero__title");
     this.createHeaderWaypoint();
     this.pageSections = $(".page-section");
@@ -17,7 +17,7 @@ class StickyHeader {
     this.headerLinks.smoothScroll();
   }
 
-  createHeaderWaypoint(){
+  createHeaderWaypoint() {
     var that = this;
     new Waypoint({
       element: this.headerTriggerElement[0],
@@ -33,16 +33,16 @@ class StickyHeader {
 
   createPageSectionWaypoints() {
     var that = this;
-    this.pageSections.each(function(){
+    this.pageSections.each(function() {
       var currentPageSection = this;
       new Waypoint({
         element: currentPageSection,
         handler: function(direction) {
           if (direction == "down") {
-          var matchingHeaderLink = currentPageSection.getAttribute("data-matching-link");
-          that.headerLinks.removeClass("is-current-link");
-          $(matchhingHeaderLink).addClass("is-current-link");
-        }
+            var matchingHeaderLink = currentPageSection.getAttribute("data-matching-link");
+            that.headerLinks.removeClass("is-current-link");
+            $(matchingHeaderLink).addClass("is-current-link");
+          }
         },
         offset: "18%"
       });
@@ -51,10 +51,10 @@ class StickyHeader {
         element: currentPageSection,
         handler: function(direction) {
           if (direction == "up") {
-          var matchingHeaderLink = currentPageSection.getAttribute("data-matching-link");
-          that.headerLinks.removeClass("is-current-link");
-          $(matchhingHeaderLink).addClass("is-current-link");
-        }
+            var matchingHeaderLink = currentPageSection.getAttribute("data-matching-link");
+            that.headerLinks.removeClass("is-current-link");
+            $(matchingHeaderLink).addClass("is-current-link");
+          }
         },
         offset: "-40%"
       });
