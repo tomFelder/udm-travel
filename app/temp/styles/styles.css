@@ -1156,6 +1156,7 @@ Instead edit gulp/templates/sprite */
   width: 20px;
   height: 19px;
   position: absolute;
+  z-index: 10;
   top: 10px;
   right: 10px;
 }
@@ -1242,6 +1243,8 @@ Instead edit gulp/templates/sprite */
     opacity: 1;
     z-index: 1;
     padding-top: 0;
+    -webkit-transform: scale(1);
+            transform: scale(1);
   }
 }
 
@@ -1283,8 +1286,8 @@ Instead edit gulp/templates/sprite */
 
 .primary-nav li {
   list-style: none;
-  padding-right: 7px;
   display: inline-block;
+  padding-right: 7px;
 }
 
 @media (min-width: 800px) {
@@ -1314,7 +1317,7 @@ Instead edit gulp/templates/sprite */
   display: block;
   padding: 5px 8px;
   font-size: .8rem;
-  background-color: rgba(47,85,114, 0.5);
+  background-color: rgba(47,85,114, .5);
 }
 
 @media (min-width: 800px) {
@@ -1346,7 +1349,7 @@ Instead edit gulp/templates/sprite */
 .modal {
   position: fixed;
   z-index: 5;
-  background-color: rgba( 255, 255, 255, .94);
+  background-color: rgba(255, 255, 255, .94);
   top: 0;
   bottom: 0;
   left: 0;
@@ -1390,11 +1393,11 @@ Instead edit gulp/templates/sprite */
   -webkit-transform-origin: 100% 0;
           transform-origin: 100% 0;
   color: #2f5572;
+  cursor: pointer;
 }
 
 .modal__close:hover {
   color: #d59541;
-  cursor: pointer;
 }
 
 .social-icons {

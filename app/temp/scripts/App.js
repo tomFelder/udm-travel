@@ -10799,7 +10799,7 @@
 	  function StickyHeader() {
 	    _classCallCheck(this, StickyHeader);
 
-	    this.siteHeader = (0, _jquery2.default)("site-header");
+	    this.siteHeader = (0, _jquery2.default)(".site-header");
 	    this.headerTriggerElement = (0, _jquery2.default)(".large-hero__title");
 	    this.createHeaderWaypoint();
 	    this.pageSections = (0, _jquery2.default)(".page-section");
@@ -10840,7 +10840,7 @@
 	            if (direction == "down") {
 	              var matchingHeaderLink = currentPageSection.getAttribute("data-matching-link");
 	              that.headerLinks.removeClass("is-current-link");
-	              (0, _jquery2.default)(matchhingHeaderLink).addClass("is-current-link");
+	              (0, _jquery2.default)(matchingHeaderLink).addClass("is-current-link");
 	            }
 	          },
 	          offset: "18%"
@@ -10852,7 +10852,7 @@
 	            if (direction == "up") {
 	              var matchingHeaderLink = currentPageSection.getAttribute("data-matching-link");
 	              that.headerLinks.removeClass("is-current-link");
-	              (0, _jquery2.default)(matchhingHeaderLink).addClass("is-current-link");
+	              (0, _jquery2.default)(matchingHeaderLink).addClass("is-current-link");
 	            }
 	          },
 	          offset: "-40%"
@@ -11253,17 +11253,14 @@
 	var Modal = function () {
 	  function Modal() {
 	    _classCallCheck(this, Modal);
+
+	    this.openModalButton = (0, _jquery2.default)(".open-modal");
+	    this.modal = (0, _jquery2.default)(".modal");
+	    this.closeModalButton = (0, _jquery2.default)(".modal__close");
+	    this.events();
 	  }
 
 	  _createClass(Modal, [{
-	    key: "constuctor",
-	    value: function constuctor() {
-	      this.openModalButton = (0, _jquery2.default)(".open-modal");
-	      this.modal = (0, _jquery2.default)(".modal");
-	      this.closeModalButton = (0, _jquery2.default)(".modal__close");
-	      this.events();
-	    }
-	  }, {
 	    key: "events",
 	    value: function events() {
 	      // clicking the open modal button
