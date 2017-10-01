@@ -14,3 +14,5 @@ Almost getting frustrated with how long I've been out on this. Going to go for i
 Back into it now and enjoying it. However I do have an issue with JS and webpack
 
 Really enjoying this but find myself exhausted every night... need to find a way to work it into my days
+
+Finally got back into this yesterday and really enjoyed it! I really need to force myself to take the time.
