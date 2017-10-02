@@ -641,7 +641,7 @@ a {
 
 @media (min-width: 1010px) {
 
-  .page-section--testimonials {
+  .page-section--testimonials.lazyloaded {
     background: url('/assets/images/testimonials-bg.jpg') top center no-repeat;
     background-size: cover;
   }
@@ -1349,7 +1349,7 @@ Instead edit gulp/templates/sprite */
 .modal {
   position: fixed;
   z-index: 5;
-  background-color: rgba(255, 255, 255, .94);
+  background-color: rgba( 255, 255, 255, .94);
   top: 0;
   bottom: 0;
   left: 0;
@@ -1393,11 +1393,11 @@ Instead edit gulp/templates/sprite */
   -webkit-transform-origin: 100% 0;
           transform-origin: 100% 0;
   color: #2f5572;
-  cursor: pointer;
 }
 
 .modal__close:hover {
   color: #d59541;
+  cursor: pointer;
 }
 
 .social-icons {
