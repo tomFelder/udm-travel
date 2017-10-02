@@ -43,16 +43,16 @@
 /******/ ({
 
 /***/ 0:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	__webpack_require__(8);
 
-/***/ }),
+/***/ },
 
 /***/ 8:
-/***/ (function(module, exports) {
+/***/ function(module, exports) {
 
 	(function(window, factory) {
 		var lazySizes = factory(window, window.document);
@@ -65,7 +65,7 @@
 		/*jshint eqnull:true */
 		if(!document.getElementsByClassName){return;}
 
-		var lazysizes, lazySizesConfig;
+		var lazySizesConfig;
 
 		var docElem = document.documentElement;
 
@@ -126,13 +126,7 @@
 		var triggerEvent = function(elem, name, detail, noBubbles, noCancelable){
 			var event = document.createEvent('CustomEvent');
 
-			if(!detail){
-				detail = {};
-			}
-
-			detail.instance = lazysizes;
-
-			event.initCustomEvent(name, !noBubbles, !noCancelable, detail);
+			event.initCustomEvent(name, !noBubbles, !noCancelable, detail || {});
 
 			elem.dispatchEvent(event);
 			return event;
@@ -164,30 +158,24 @@
 
 		var rAF = (function(){
 			var running, waiting;
-			var firstFns = [];
-			var secondFns = [];
-			var fns = firstFns;
+			var fns = [];
 
 			var run = function(){
-				var runFns = fns;
-
-				fns = firstFns.length ? secondFns : firstFns;
-
+				var fn;
 				running = true;
 				waiting = false;
-
-				while(runFns.length){
-					runFns.shift()();
+				while(fns.length){
+					fn = fns.shift();
+					fn[0].apply(fn[1], fn[2]);
 				}
-
 				running = false;
 			};
 
-			var rafBatch = function(fn, queue){
-				if(running && !queue){
+			return function(fn){
+				if(running){
 					fn.apply(this, arguments);
 				} else {
-					fns.push(fn);
+					fns.push([fn, this, arguments]);
 
 					if(!waiting){
 						waiting = true;
@@ -195,10 +183,6 @@
 					}
 				}
 			};
-
-			rafBatch._lsFlush = run;
-
-			return rafBatch;
 		})();
 
 		var rAFIt = function(fn, simple){
@@ -220,7 +204,7 @@
 			var running;
 			var lastTime = 0;
 			var gDelay = 125;
-			var RIC_DEFAULT_TIMEOUT = 666;
+			var RIC_DEFAULT_TIMEOUT = 999;
 			var rICTimeout = RIC_DEFAULT_TIMEOUT;
 			var run = function(){
 				running = false;
@@ -242,7 +226,7 @@
 			return function(isPriority){
 				var delay;
 				if((isPriority = isPriority === true)){
-					rICTimeout = 44;
+					rICTimeout = 66;
 				}
 
 				if(running){
@@ -294,7 +278,7 @@
 
 
 		var loader = (function(){
-			var preloadElems, isCompleted, resetPreloadingTimer, loadMode, started;
+			var lazyloadElems, preloadElems, isCompleted, resetPreloadingTimer, loadMode, started;
 
 			var eLvW, elvH, eLtop, eLleft, eLright, eLbottom;
 
@@ -309,7 +293,7 @@
 			var currentExpand = 0;
 
 			var isLoading = 0;
-			var lowRuns = -1;
+			var lowRuns = 0;
 
 			var resetPreloading = function(e){
 				isLoading--;
@@ -351,8 +335,6 @@
 			var checkElements = function() {
 				var eLlen, i, rect, autoLoadElem, loadedSomething, elemExpand, elemNegativeExpand, elemExpandVal, beforeExpandVal;
 
-				var lazyloadElems = lazysizes.elements;
-
 				if((loadMode = lazySizesConfig.loadMode) && isLoading < 8 && (eLlen = lazyloadElems.length)){
 
 					i = 0;
@@ -361,17 +343,17 @@
 
 					if(preloadExpand == null){
 						if(!('expand' in lazySizesConfig)){
-							lazySizesConfig.expand = docElem.clientHeight > 500 && docElem.clientWidth > 500 ? 500 : 370;
+							lazySizesConfig.expand = docElem.clientHeight > 500 ? 500 : 400;
 						}
 
 						defaultExpand = lazySizesConfig.expand;
 						preloadExpand = defaultExpand * lazySizesConfig.expFactor;
 					}
 
-					if(currentExpand < preloadExpand && isLoading < 1 && lowRuns > 2 && loadMode > 2 && !document.hidden){
+					if(currentExpand < preloadExpand && isLoading < 1 && lowRuns > 3 && loadMode > 2){
 						currentExpand = preloadExpand;
 						lowRuns = 0;
-					} else if(loadMode > 1 && lowRuns > 1 && isLoading < 6){
+					} else if(loadMode > 1 && lowRuns > 2 && isLoading < 6){
 						currentExpand = defaultExpand;
 					} else {
 						currentExpand = shrinkExpand;
@@ -401,7 +383,6 @@
 							(eLright = rect.right) >= elemNegativeExpand * hFac &&
 							(eLleft = rect.left) <= eLvW &&
 							(eLbottom || eLright || eLleft || eLtop) &&
-							(lazySizesConfig.loadHidden || getCSS(lazyloadElems[i], 'visibility') != 'hidden') &&
 							((isCompleted && isLoading < 3 && !elemExpandVal && (loadMode < 3 || lowRuns < 4)) || isNestedVisible(lazyloadElems[i], elemExpand))){
 							unveilElement(lazyloadElems[i]);
 							loadedSomething = true;
@@ -426,7 +407,6 @@
 				addClass(e.target, lazySizesConfig.loadedClass);
 				removeClass(e.target, lazySizesConfig.loadingClass);
 				addRemoveLoadEvents(e.target, rafSwitchLoadingClass);
-				triggerEvent(e.target, 'lazyloaded');
 			};
 			var rafedSwitchLoadingClass = rAFIt(switchLoadingClass);
 			var rafSwitchLoadingClass = function(e){
@@ -442,7 +422,7 @@
 			};
 
 			var handleSources = function(source){
-				var customMedia;
+				var customMedia, parent;
 
 				var sourceSrcset = source[_getAttribute](lazySizesConfig.srcsetAttr);
 
@@ -452,6 +432,13 @@
 
 				if(sourceSrcset){
 					source.setAttribute('srcset', sourceSrcset);
+				}
+
+				//https://bugzilla.mozilla.org/show_bug.cgi?id=1170572
+				if(customMedia){
+					parent = source.parentNode;
+					parent.insertBefore(source.cloneNode(), source);
+					parent.removeChild(source);
 				}
 			};
 
@@ -503,18 +490,18 @@
 						}
 					}
 
-					if(isImg && (srcset || isPicture)){
+					if(srcset || isPicture){
 						updatePolyfill(elem, {src: src});
 					}
 				}
 
-				if(elem._lazyRace){
-					delete elem._lazyRace;
-				}
-				removeClass(elem, lazySizesConfig.lazyClass);
-
 				rAF(function(){
-					if( !firesLoad || (elem.complete && elem.naturalWidth > 1)){
+					if(elem._lazyRace){
+						delete elem._lazyRace;
+					}
+					removeClass(elem, lazySizesConfig.lazyClass);
+
+					if( !firesLoad || elem.complete ){
 						if(firesLoad){
 							resetPreloading(event);
 						} else {
@@ -522,7 +509,7 @@
 						}
 						switchLoadingClass(event);
 					}
-				}, true);
+				});
 			});
 
 			var unveilElement = function (elem){
@@ -534,7 +521,7 @@
 				var sizes = isImg && (elem[_getAttribute](lazySizesConfig.sizesAttr) || elem[_getAttribute]('sizes'));
 				var isAuto = sizes == 'auto';
 
-				if( (isAuto || !isCompleted) && isImg && (elem[_getAttribute]('src') || elem.srcset) && !elem.complete && !hasClass(elem, lazySizesConfig.errorClass)){return;}
+				if( (isAuto || !isCompleted) && isImg && (elem.src || elem.srcset) && !elem.complete && !hasClass(elem, lazySizesConfig.errorClass)){return;}
 
 				detail = triggerEvent(elem, 'lazyunveilread').detail;
 
@@ -577,7 +564,7 @@
 				_: function(){
 					started = Date.now();
 
-					lazysizes.elements = document.getElementsByClassName(lazySizesConfig.lazyClass);
+					lazyloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass);
 					preloadElems = document.getElementsByClassName(lazySizesConfig.lazyClass + ' ' + lazySizesConfig.preloadClass);
 					hFac = lazySizesConfig.hFac;
 
@@ -608,12 +595,7 @@
 						setTimeout(onload, 20000);
 					}
 
-					if(lazysizes.elements.length){
-						checkElements();
-						rAF._lsFlush();
-					} else {
-						throttledCheckElements();
-					}
+					throttledCheckElements(lazyloadElems.length > 0);
 				},
 				checkElems: throttledCheckElements,
 				unveil: unveilElement
@@ -712,8 +694,7 @@
 				init: true,
 				expFactor: 1.5,
 				hFac: 0.8,
-				loadMode: 2,
-				loadHidden: true,
+				loadMode: 2
 			};
 
 			lazySizesConfig = window.lazySizesConfig || window.lazysizesConfig || {};
@@ -733,7 +714,7 @@
 			});
 		})();
 
-		lazysizes = {
+		return {
 			cfg: lazySizesConfig,
 			autoSizer: autoSizer,
 			loader: loader,
@@ -746,12 +727,10 @@
 			gW: getWidth,
 			rAF: rAF,
 		};
-
-		return lazysizes;
 	}
 	));
 
 
-/***/ })
+/***/ }
 
 /******/ });
